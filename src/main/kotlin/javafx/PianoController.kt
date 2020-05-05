@@ -5,6 +5,7 @@ import core.Key
 import javafx.scene.media.AudioClip
 import tornadofx.Controller
 import java.io.File
+import java.nio.file.Paths
 
 class PianoController: Controller() {
 
@@ -14,9 +15,11 @@ class PianoController: Controller() {
     var triggerUponHovering = false
     var alterOctave = false
 
+    private val resourcesDestination = Paths.get("src", "main", "resources").toString()
+
 
     init {
-        File("src/main/resources/").walk().filter { it.extension == "wav" }.forEach {
+        File(resourcesDestination).walk().filter { it.extension == "wav" }.forEach {
             if (it.name.contains("White"))
                 whiteSounds.add(AudioClip(it.toURI().toString()))
             else
@@ -48,5 +51,8 @@ class PianoController: Controller() {
             playCorrectNote(key)
     }
 
-    fun stopPlaying() = whiteSounds.forEach { it.stop() }
+    fun stopPlaying() {
+        blackSounds.forEach { it.stop() }
+        whiteSounds.forEach { it.stop() }
+    }
 }

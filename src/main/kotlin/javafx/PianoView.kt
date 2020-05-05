@@ -13,7 +13,8 @@ class PianoView: View() {
 
     override var root = BorderPane()
 
-    private val buttonAmount = 8
+    private val whiteButtonAmount = 8
+    private val blackButtonAmount = 5
 
     private val initialWhiteColor = c("f7f7f7")
     private val pressedWhiteColor = c("b5b5b5")
@@ -23,7 +24,9 @@ class PianoView: View() {
     private val pressedBlackColor = c("707070")
     private val hoverBlackColor = c("393939")
 
-    //private val keys = mutableMapOf<Key, Rectangle>()
+    private val whiteWidth = 70.0
+    private val blackWidth = 35.0
+
     private var buttonPosition = 0.0
 
     private val controller = PianoController()
@@ -53,7 +56,7 @@ class PianoView: View() {
                     }
                     hbox {
                         alignment = Pos.CENTER
-                        radiobutton {
+                        checkbox {
                             text = "Change octave"
                             isSelected = controller.alterOctave
                             style {
@@ -64,7 +67,7 @@ class PianoView: View() {
                             }
                         }
                         spacing = 20.0
-                        radiobutton {
+                        checkbox {
                             text = "Toggle key entering playing"
                             isSelected = controller.triggerUponHovering
                             style {
@@ -75,38 +78,37 @@ class PianoView: View() {
                             }
                         }
                     }
-
                 }
             }
             center {
                 anchorpane{
-                    for (i in 0 until buttonAmount) {
+                    for (i in 0 until whiteButtonAmount) {
                         val key = Key(Colour.WHITE, i)
-                        add(createButton(key, i))
+                        add(createButton(key))
                     }
-                    buttonPosition = 52.5
-                    for (i in 0 until 5) {
+                    buttonPosition = whiteWidth - blackWidth / 2
+                    for (i in 0 until blackButtonAmount) {
                         val key = Key(Colour.BLACK, i)
-                            add(createButton(key, i))
+                        add(createButton(key))
                         }
                     }
                 }
             }
         }
-    private fun createButton(key: Key, i: Int): Rectangle {
+    private fun createButton(key: Key): Rectangle {
         val rect = Rectangle()
         with (rect) {
             if (key.colour == Colour.WHITE) {
             layoutX = buttonPosition
-            width = 70.0
+            width = whiteWidth
             buttonPosition += width
             height = 270.0
             fill = initialWhiteColor
             } else {
-                layoutX = buttonPosition//52.5
-                if (i == 1)
+                layoutX = buttonPosition
+                if (key.ID == 1)
                     buttonPosition += 70
-                width = 35.0
+                width = blackWidth
                 buttonPosition += 70
                 height = 180.0
                 fill = initialBlackColor
@@ -150,4 +152,4 @@ class PianoView: View() {
                 }
         }
     }
-    }
+}
