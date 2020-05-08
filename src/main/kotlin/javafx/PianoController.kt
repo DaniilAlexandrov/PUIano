@@ -4,8 +4,6 @@ import core.Colour
 import core.Key
 import javafx.scene.media.AudioClip
 import tornadofx.Controller
-import java.io.File
-import java.nio.file.Paths
 
 class PianoController: Controller() {
 
@@ -15,16 +13,11 @@ class PianoController: Controller() {
     var triggerUponHovering = false
     var alterOctave = false
 
-    private val resourcesDestination = Paths.get("src", "main", "resources").toString()
-
-
     init {
-        File(resourcesDestination).walk().filter { it.extension == "wav" }.forEach {
-            if (it.name.contains("White"))
-                whiteSounds.add(AudioClip(it.toURI().toString()))
-            else
-                blackSounds.add(AudioClip(it.toURI().toString()))
-        }
+        fillList(whiteSounds, black = false, altered = true)
+        fillList(whiteSounds, black = false, altered = false)
+        fillList(blackSounds, black = true, altered = true)
+        fillList(blackSounds, black = true, altered = false)
     }
 
     fun playCorrectNote(key: Key) {
@@ -54,5 +47,18 @@ class PianoController: Controller() {
     fun stopPlaying() {
         blackSounds.forEach { it.stop() }
         whiteSounds.forEach { it.stop() }
+    }
+
+    private fun  fillList(targetList: MutableList<AudioClip>, black: Boolean, altered: Boolean) {
+        val upperConstraint = if (black) 5 else 8
+        for (i in 1..upperConstraint) {
+            val url = when {
+                black && !altered -> this.javaClass.classLoader.getResource("Sounds/Black${i}.wav")
+                black && altered -> this.javaClass.classLoader.getResource("Sounds/AlteredBlack${i}.wav")
+                !black && !altered -> this.javaClass.classLoader.getResource("Sounds/White${i}.wav")
+                else -> this.javaClass.classLoader.getResource("Sounds/AlteredWhite${i}.wav")
+            }
+            targetList.add(AudioClip(url!!.toString()))
+        }
     }
 }
