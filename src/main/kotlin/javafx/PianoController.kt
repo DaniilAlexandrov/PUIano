@@ -51,13 +51,14 @@ class PianoController: Controller() {
 
     private fun  fillList(targetList: MutableList<AudioClip>, black: Boolean, altered: Boolean) {
         val upperConstraint = if (black) 5 else 8
+        val resourceName = when {
+            black && !altered -> "Sounds/Black"
+            black && altered -> "Sounds/AlteredBlack"
+            !black && !altered -> "Sounds/White"
+            else -> "Sounds/AlteredWhite"
+        }
         for (i in 1..upperConstraint) {
-            val url = when {
-                black && !altered -> this.javaClass.classLoader.getResource("Sounds/Black${i}.wav")
-                black && altered -> this.javaClass.classLoader.getResource("Sounds/AlteredBlack${i}.wav")
-                !black && !altered -> this.javaClass.classLoader.getResource("Sounds/White${i}.wav")
-                else -> this.javaClass.classLoader.getResource("Sounds/AlteredWhite${i}.wav")
-            }
+            val url = this.javaClass.classLoader.getResource("${resourceName}${i}.wav")
             targetList.add(AudioClip(url!!.toString()))
         }
     }
