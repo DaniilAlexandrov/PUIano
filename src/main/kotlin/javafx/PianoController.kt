@@ -7,8 +7,8 @@ import tornadofx.Controller
 
 class PianoController: Controller() {
 
-    private val whiteSounds = mutableListOf<AudioClip>()
-    private val blackSounds = mutableListOf<AudioClip>()
+    internal val whiteSounds = mutableListOf<AudioClip>()
+    internal val blackSounds = mutableListOf<AudioClip>()
 
     var triggerUponHovering = false
     var alterOctave = false
@@ -49,7 +49,7 @@ class PianoController: Controller() {
         whiteSounds.forEach { it.stop() }
     }
 
-    private fun  fillList(targetList: MutableList<AudioClip>, black: Boolean, altered: Boolean) {
+    internal fun fillList(targetList: MutableList<AudioClip>, black: Boolean, altered: Boolean) {
         val upperConstraint = if (black) 5 else 8
         val resourceName = when {
             black && !altered -> "Sounds/Black"
