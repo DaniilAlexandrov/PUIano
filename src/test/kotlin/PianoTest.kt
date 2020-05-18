@@ -23,6 +23,16 @@ internal class PianoTest {
     @Test
     fun fillListTestWhite() {
         val list = mutableListOf<AudioClip>()
+        PianoController().fillList(list, black = false, altered = false)
+        assertEquals(8, list.size)
+    }
+
+    /*
+    Making sure that 8 white sounds are added upon request.
+     */
+    @Test
+    fun fillListTestWhiteAltered() {
+        val list = mutableListOf<AudioClip>()
         PianoController().fillList(list, black = false, altered = true)
         assertEquals(8, list.size)
     }
@@ -32,6 +42,16 @@ internal class PianoTest {
      */
     @Test
     fun fillListTestBlack() {
+        val list = mutableListOf<AudioClip>()
+        PianoController().fillList(list, black = true, altered = false)
+        assertEquals(5, list.size)
+    }
+
+    /*
+    Making sure that 5 black sounds are added upon request.
+     */
+    @Test
+    fun fillListTestBlackAltered() {
         val list = mutableListOf<AudioClip>()
         PianoController().fillList(list, black = true, altered = true)
         assertEquals(5, list.size)
